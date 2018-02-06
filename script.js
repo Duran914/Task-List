@@ -14,6 +14,7 @@ taskForm.addEventListener('submit', addTask);
 taskList.addEventListener('click', removeTask);
 taskInput.addEventListener("focus", removeBanner);
 clearAllTasks.addEventListener('click', clearAll);
+filterTask.addEventListener('keyup', filter);
 }
 
 function addTask(e){
@@ -32,9 +33,12 @@ function addTask(e){
         link.innerHTML = '<i class="fa fa-remove"></i>';
         link.style.float = 'right';
         link.style.cursor = 'pointer';
+
+        const hrTag = document.createElement('hr');
+
         li.appendChild(link);
         taskList.appendChild(li);
-
+        
         taskInput.value = '';
     }
     e.preventDefault();
@@ -50,10 +54,9 @@ function errorBanner(err) {
     const errorDiv = document.createElement('div');
     const btn = document.createElement('button');
 
-    errorDiv.className = 'alert alert-warning fade show';
+    errorDiv.className = 'alert alert-danger fade show';
     
     btn.className = 'close';
-    btn.setAttribute('data-dismiss', 'alert');
     errorDiv.appendChild(btn)
 
     errorDiv.appendChild(document.createTextNode(err)); 
@@ -72,6 +75,18 @@ function clearAll() {
   let taskItem = document.querySelectorAll('.list-group-item');
   taskItem.forEach(function(task){
         task.remove();
+    })
+
+}
+function filter(e) {
+    const text = e.target.value.toLowerCase();
+    document.querySelectorAll('.list-group-item').forEach(function(task){
+        const listItem = task.firstChild.textContent;
+            if (listItem.toLowerCase().indexOf(text) != -1) {
+                task.style.display = 'block';
+            }else{
+                task.style.display = 'none';
+            }
     })
 
 }
